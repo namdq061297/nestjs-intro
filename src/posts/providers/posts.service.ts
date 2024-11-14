@@ -7,6 +7,7 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 export class PostsService {
   constructor(private readonly usersService: UsersService) {}
   create(createPostDto: CreatePostDto) {
+    console.log('createPostDto', createPostDto);
     return 'This action adds a new post';
   }
 
