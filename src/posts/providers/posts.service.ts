@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Body, Injectable, Patch } from '@nestjs/common';
 import { UsersService } from 'src/users/providers/users.service';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
@@ -19,8 +19,9 @@ export class PostsService {
     return `This action find #${id} post`;
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  @Patch()
+  update(@Body() bodyDto: UpdatePostDto) {
+    console.log(bodyDto);
   }
 
   remove(id: number) {
