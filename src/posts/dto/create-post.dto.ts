@@ -4,26 +4,25 @@ import {
   IsArray,
   IsEnum,
   IsISO8601,
+  IsJSON,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
+  MaxLength,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
 import { postStatus, postType } from '../enum/post.enum';
 
-type META = {
-  key: string;
-  value: string;
-};
+// type META = {
+//   key: string;
+//   value: string;
+// };
 
 export class metaOptionDTO {
-  @IsString()
+  @IsJSON()
   @IsNotEmpty()
-  key: string;
-  @IsNotEmpty()
-  value: any;
+  metaValue: any;
 }
 export class CreatePostDto {
   @ApiProperty({
@@ -32,6 +31,7 @@ export class CreatePostDto {
   })
   @IsString()
   @MinLength(4)
+  @MaxLength(30)
   @IsNotEmpty()
   title: string;
   @ApiProperty({
@@ -41,6 +41,7 @@ export class CreatePostDto {
   postType: postType;
   @IsString()
   @IsNotEmpty()
+  @MaxLength(30)
   slug: string;
   @ApiProperty({
     enum: postStatus,
@@ -54,6 +55,7 @@ export class CreatePostDto {
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()
+  @MaxLength(30)
   schema?: string;
   @ApiPropertyOptional()
   @IsUrl()
@@ -74,19 +76,16 @@ export class CreatePostDto {
     items: {
       type: 'object',
       properties: {
-        key: {
-          type: 'string',
-          description: 'key of item',
-        },
-        value: {
-          type: 'any',
+        metaValue: {
+          type: 'json',
+          description: 'meta value json string',
+          example: '{"test": true}',
         },
       },
     },
   })
   @IsOptional()
-  @IsArray()
-  @ValidateNested({ each: true })
+  // @ValidateNested({ each: true })
   @Type(() => metaOptionDTO)
-  metaOptions?: metaOptionDTO[];
+  metaOptions?: metaOptionDTO | null;
 }

@@ -13,7 +13,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(10)
-  name: string;
+  firstName: string;
 
   @IsNumber()
   @IsOptional()

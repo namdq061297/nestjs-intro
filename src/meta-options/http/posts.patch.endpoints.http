@@ -1,17 +1,16 @@
-POST http://localhost:3000/posts/
+PATCH http://localhost:3000/posts/
 Content-Type: application/json
 
 {
+  "id": 2,
   "title": "title post test",
   "postType": "post",
-  "slug": "new-with-nestjs-1",
+  "slug": "new-with-nestjs",
   "status": "published",
   "content": "learning nestjs",
   "schema": "schema test",
   "imageUrl": "https://abc.com",
-  // "tags": ["nestjs", "js"],
+  "tags": ["nestjs", "js"],
   "publishDate": "2023-11-14T09:45:00Z",
-  "metaOptions": {
-    "metaValue":  "{\"key\": key1, \"value\": value1 }"
-  }
+  "metaOptions": [{ "key": "key1", "value": "value1" }]
 }

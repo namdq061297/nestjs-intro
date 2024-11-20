@@ -63,8 +63,8 @@ export class UsersController {
     // @Headers() header,
     // @Ip() ip,
   ) {
-    console.log('body', body instanceof CreateUserDto);
-    return 'create user';
+    console.log('body', body);
+    return this.usersService.createUser(body);
   }
 
   @Patch()
