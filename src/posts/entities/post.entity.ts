@@ -1,11 +1,6 @@
 import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { postStatus, postType } from '../enum/post.enum';
 
 @Entity()
@@ -60,7 +55,12 @@ export class Post {
     nullable: true,
   })
   publishDate?: Date;
-  @OneToOne(() => MetaOption)
-  @JoinColumn()
+  @OneToOne(() => MetaOption, (meta) => meta.post, {
+    cascade: true,
+    eager: true,
+  })
+  // @JoinColumn()
   metaOptions?: MetaOption;
+  @ManyToOne(() => User, (user) => user.posts)
+  author: User;
 }

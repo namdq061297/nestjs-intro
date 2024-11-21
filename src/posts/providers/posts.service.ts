@@ -15,21 +15,18 @@ export class PostsService {
     private metatOptionRepository: Repository<MetaOption>,
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
-  ) {}
+  ) { }
   async create(@Body() createPostDto: CreatePostDto) {
-    console.log('createPostDto', createPostDto);
-    const metaOption = createPostDto?.metaOptions
-      ? this.metatOptionRepository.create(createPostDto?.metaOptions)
-      : null;
-    console.log(metaOption);
-    return;
-    if (metaOption) {
-      await this.metatOptionRepository.save(metaOption);
-    }
+    // const metaOption = createPostDto?.metaOptions
+    //   ? this.metatOptionRepository.create(createPostDto?.metaOptions)
+    //   : null;
+    // if (metaOption) {
+    //   await this.metatOptionRepository.save(metaOption);
+    // }
     const post = this.postRepository.create(createPostDto);
-    if (metaOption) {
-      post.metaOptions = metaOption;
-    }
+    // if (metaOption) {
+    //   post.metaOptions = metaOption;
+    // }
     await this.postRepository.save(post);
   }
 
@@ -37,8 +34,15 @@ export class PostsService {
     return `This action returns all posts`;
   }
 
-  findOne(id: number) {
-    return `This action find #${id} post`;
+  async findOne(id: number) {
+    const find = await this.postRepository.findOneBy({ id: id });
+    console.log(find);
+    const post = await this.postRepository.find({
+      relations: {
+        // metaOptions: true,
+      },
+    });
+    return post;
   }
 
   @Patch()
@@ -46,13 +50,25 @@ export class PostsService {
     console.log(bodyDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  async remove(id: number) {
+    // const post = await this.postRepository.findOneBy({ id: id });
+    // if (post.metaOptions) {
+    //   await this.postRepository.delete({ id });
+    //   await this.metatOptionRepository.delete({ id: post?.metaOptions?.id });
+    //   const inversePost = await this.metatOptionRepository.find({
+    //     where: { id: post.metaOptions.id },
+    //     relations: {
+    //       post: true,
+    //     },
+    //   });
+    //   console.log('inversePost', inversePost);
+    // }
+    await this.postRepository.delete(id);
+    return { deleted: true, id };
   }
 
-  findOneByUserId(userId: number) {
+  async findOneByUserId(userId: number) {
     const user = this.usersService.findOne({ params: { id: userId } });
-    console.log('user', user);
-    return `This action returns ${user.userId}`;
+    return user;
   }
 }

@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "title": "title post test",
   "postType": "post",
-  "slug": "new-with-nestjs-1",
+  "slug": "new-with-nestjs-2",
   "status": "published",
   "content": "learning nestjs",
   "schema": "schema test",
