@@ -1,7 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TagsService } from './tags.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query
+} from '@nestjs/common';
 import { CreateTagDto } from './dto/create-tag.dto';
 import { UpdateTagDto } from './dto/update-tag.dto';
+import { TagsService } from './providers/tags.service';
 
 @Controller('tags')
 export class TagsController {
@@ -27,8 +37,13 @@ export class TagsController {
     return this.tagsService.update(+id, updateTagDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tagsService.remove(+id);
+  @Delete()
+  remove(@Query('id', ParseIntPipe) id: number) {
+    return this.tagsService.remove(id);
+  }
+
+  @Delete('soft-remove')
+  softRemove(@Query('id', ParseIntPipe) id: number) {
+    return this.tagsService.softRemove(id);
   }
 }

@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "title": "title post test",
   "postType": "post",
-  "slug": "new-with-nestjs-2",
+  "slug": "new-with-nestjs-000",
   "status": "published",
   "content": "learning nestjs",
   "schema": "schema test",
@@ -13,5 +13,7 @@ Content-Type: application/json
   "publishDate": "2023-11-14T09:45:00Z",
   "metaOptions": {
     "metaValue":  "{\"key\": key1, \"value\": value1 }"
-  }
+  },
+  "authorId": 1,
+  "tags": [7]
 }

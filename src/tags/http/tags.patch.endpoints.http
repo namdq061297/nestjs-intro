@@ -2,15 +2,15 @@ PATCH http://localhost:3000/posts/
 Content-Type: application/json
 
 {
-  "id": 7,
-  "title": "title post test id 7",
+  "id": 2,
+  "title": "title post test",
   "postType": "post",
-  "slug": "new-with-nestjs-3",
+  "slug": "new-with-nestjs",
   "status": "published",
   "content": "learning nestjs",
   "schema": "schema test",
   "imageUrl": "https://abc.com",
-  "tags": [1,2,3,4,5],
+  "tags": ["nestjs", "js"],
   "publishDate": "2023-11-14T09:45:00Z",
   "metaOptions": [{ "key": "key1", "value": "value1" }]
 }

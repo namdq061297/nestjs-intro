@@ -28,7 +28,7 @@ export class UsersService {
     // ];
     // return data;
   }
-  public findOne({
+  public async findOne({
     params,
     limit,
     page,
@@ -37,12 +37,9 @@ export class UsersService {
     limit?: number;
     page?: number;
   }) {
-    // console.log('params', params);
-    console.log('limit', limit);
-    console.log('page', page);
-    return {
-      userId: params?.id,
-    };
+    const find = await this.userRepository.findOneBy({ id: params.id });
+    console.log(find);
+    return find;
   }
 
   public async createUser(dto: CreateUserDto) {

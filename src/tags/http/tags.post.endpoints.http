@@ -1,0 +1,10 @@
+POST http://localhost:3000/tags/
+Content-Type: application/json
+
+{
+  "name": "javascript ok",
+  "slug": "js11",
+  "schema": "tag js 11",
+  "description": "",
+  "imageUrl": ""
+}
