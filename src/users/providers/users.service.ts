@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import profileConfig from '../config/profile.config';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { GetUserDto } from '../dtos/get-user.dto';
 import { User } from '../entities/user.entity';
@@ -14,10 +15,13 @@ export class UsersService {
     private userRepository: Repository<User>,
     // private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
   public findAll() {
     const env = this.configService.get('S3_BUCKET');
     console.log(env);
+    console.log(this.profileConfiguration);
     // const isAuth = this.authService.isAuth();
     // console.log(isAuth);
     // const data = [
