@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateManyUserDto } from './dtos/create-many-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserDto } from './dtos/get-user.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
@@ -63,13 +64,19 @@ export class UsersController {
     // @Headers() header,
     // @Ip() ip,
   ) {
-    console.log('body', body);
+    console.log('createUser', body);
     return this.usersService.createUser(body);
+  }
+
+  @Post('create-many')
+  public createManyUser(@Body() body: CreateManyUserDto) {
+    console.log('createManyUser', body);
+    return this.usersService.createMany(body);
   }
 
   @Patch()
   public patchUser(@Body() body: PatchUserDto) {
-    console.log('body', body);
+    console.log('patchUser', body);
     return 'patch user';
   }
 }

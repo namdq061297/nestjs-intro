@@ -2,9 +2,9 @@ POST http://localhost:3000/posts/
 Content-Type: application/json
 
 {
-  "title": "title post test",
+  "title": "namdz111",
   "postType": "post",
-  "slug": "new-with-nestjs-000",
+  "slug": "namdz111",
   "status": "published",
   "content": "learning nestjs",
   "schema": "schema test",

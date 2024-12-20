@@ -1,4 +1,11 @@
-import { Body, Injectable, Patch } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  BadGatewayException,
+  Body,
+  Injectable,
+  Patch,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
@@ -47,28 +54,57 @@ export class PostsService {
         // tags: true,
         // author: true,
       },
+      order: {
+        id: 'ASC',
+      },
     });
     return posts;
   }
 
   async findOne(id: number) {
-    const find = await this.postRepository.findOneBy({ id: id });
-    console.log(find);
-    const post = await this.postRepository.find({
-      relations: {
-        // metaOptions: true,
-      },
-    });
-    return post;
+    // const find = await this.postRepository.findOneBy({ id: id });
+    // console.log(find);
+    // const post = await this.postRepository.find({
+    //   relations: {
+    //     // metaOptions: true,
+    //   },
+    // });
+    // return post;
+    let findPost;
+    try {
+      findPost = await this.postRepository.findOneBy({
+        id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException('unable to process request', {
+        description: 'error connect to db',
+      });
+    }
+    return findPost;
   }
 
   @Patch()
   async update(@Body() bodyDto: UpdatePostDto) {
     const findTag = await this.tagsService.findOne(bodyDto.id);
     const findTags = await this.tagsService.findTags(bodyDto.tags);
-    const findPost = await this.postRepository.findOneBy({
-      id: bodyDto.id,
-    });
+    // const findPost = await this.postRepository.findOneBy({
+    //   id: bodyDto.id,
+    // });
+    let findPost;
+    console.log('bodyDto', bodyDto);
+    try {
+      findPost = await this.postRepository.findOneBy({
+        id: bodyDto.id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException('unable to process request', {
+        description: 'error connect to db',
+      });
+    }
+    console.log('findPost', findPost);
+    if (!findPost) {
+      throw new BadGatewayException('post not exist');
+    }
     findPost.title = bodyDto?.title ?? findPost.title;
     findPost.content = bodyDto?.content ?? findPost.content;
     findPost.status = bodyDto?.status ?? findPost.status;
