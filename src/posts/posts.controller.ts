@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dto/create-post.dto';
+import { GetPostDTO } from './dto/get-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostsService } from './providers/posts.service';
 
@@ -32,12 +33,13 @@ export class PostsController {
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@Query() postQuery: GetPostDTO) {
+    return this.postsService.findAll(postQuery);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string, @Query() postQuery: GetPostDTO) {
+    console.log('postQuery', postQuery);
     return this.postsService.findOne(+id);
   }
 

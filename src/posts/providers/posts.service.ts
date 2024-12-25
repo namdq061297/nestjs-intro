@@ -7,11 +7,14 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { PaginationService } from 'src/common/pagination/providers/pagination.service';
 import { MetaOption } from 'src/meta-options/entities/meta-option.entity';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { UsersService } from 'src/users/providers/users.service';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from '../dto/create-post.dto';
+import { GetPostDTO } from '../dto/get-post.dto';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { Post } from '../entities/post.entity';
 
@@ -24,6 +27,7 @@ export class PostsService {
     @InjectRepository(Post)
     private postRepository: Repository<Post>,
     private readonly tagsService: TagsService,
+    private readonly paginationService: PaginationService,
   ) {}
   async create(@Body() createPostDto: CreatePostDto) {
     // const metaOption = createPostDto?.metaOptions
@@ -47,7 +51,14 @@ export class PostsService {
     await this.postRepository.save(post);
   }
 
-  async findAll() {
+  async findAll(query: GetPostDTO): Promise<Paginated<Post>> {
+    const paganationServicePost = await this.paginationService.paganateQuery(
+      {
+        limit: query?.limit,
+        page: query?.page,
+      },
+      this.postRepository,
+    );
     const posts = await this.postRepository.find({
       relations: {
         metaOptions: true,
@@ -57,8 +68,10 @@ export class PostsService {
       order: {
         id: 'ASC',
       },
+      take: query.limit,
+      skip: (query.page - 1) * query.limit,
     });
-    return posts;
+    return paganationServicePost;
   }
 
   async findOne(id: number) {
